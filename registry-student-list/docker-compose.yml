@@ -1,0 +1,29 @@
+version: '3'
+services:
+  registry_ui:
+    image: joxit/docker-registry-ui:2.0
+    container_name: registry_ui
+    ports:
+      - "81:80"
+    volumes:
+      - ./config.yml:/etc/docker/registry/config.yml
+    environment:
+      REGISTRY_TITLE: "Registry Student List App"
+      REGISTRY_URL: http://localhost:5001
+    networks:
+      - share_registry
+    depends_on:
+      - registry_core
+
+  registry_core:
+    image: registry:2
+    container_name: registry_core
+    ports:
+      - "5001:5000"
+    restart: always
+    networks:
+      - share_registry
+
+networks:
+  share_registry:
+    driver: bridge
