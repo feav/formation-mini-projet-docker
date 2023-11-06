@@ -1,0 +1,28 @@
+version: '3'
+services:
+  frontend:
+    image: php:apache
+    container_name: frontend
+    ports:
+      - "80:80"
+    volumes:
+      - ./website:/var/www/html
+    environment:
+      - USERNAME=toto
+      - PASSWORD=python
+    networks:
+      - share
+    depends_on:
+      - backend
+
+  backend:
+    build: ./simple_api
+    container_name: backend
+    ports:
+      - "9090:5000"
+    networks:
+      - share
+
+networks:
+  share:
+    driver: bridge
